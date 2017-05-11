@@ -31,7 +31,7 @@ export default class RankedList extends Component {
       </tr>)
 
     return (
-      <Table>
+      <Table striped condensed hover>
         <thead>
           <tr>
             <th>Team</th>
