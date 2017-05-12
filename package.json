@@ -19,5 +19,6 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "http://davish.github.io/roboscout-app"
+  "homepage": "http://davish.github.io/roboscout-app",
+  "proxy": "http://localhost:5000"
 }

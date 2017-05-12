@@ -1,0 +1,3 @@
+[submodule "backend/algorithm"]
+	path = backend/algorithm
+	url = git@github.com:davish/roboscout.git

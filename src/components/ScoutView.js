@@ -51,13 +51,13 @@ export default class ScoutView extends Component {
     return (
       <Grid>
         <Row>
-          <Col sm="9">
+          <Col sm={9}>
             <MatchList matches={this.state.matches}
                        updateMatch={this.updateMatch.bind(this)}
                        addMatch={this.addMatch.bind(this)} />
 
           </Col>
-          <Col sm="3">
+          <Col sm={3}>
             <RankedList matches={this.state.matches}/>
           </Col>
         </Row>

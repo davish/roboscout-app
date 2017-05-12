@@ -4,6 +4,11 @@ import ScoutView from './components/ScoutView';
 
 class App extends Component {
   render() {
+    fetch('/api/').then(e => {
+      return e.text();
+    }).then(j => {
+      console.log(j);
+    })
     return (
       <div className="App">
         <ScoutView />
