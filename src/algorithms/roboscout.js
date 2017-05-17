@@ -1,6 +1,9 @@
 /**
  * Created by davis on 5/5/17.
  */
+
+/* eslint-disable */
+
 function teamToMatch(data) {
   let teams = {};
   let teamNames = ['red1', 'red2', 'blue1', 'blue2'];
@@ -105,7 +108,7 @@ export default function scout(data) {
   let mod = mapzip(teams, t => {return ta[t] - tpa[t]});
 
   let expo = mapzip(teams, t => {return ta[t]/2+mod[t]});
-  let avgexpo = avg(Object.keys(expo).map(k => {return expo[k]}));
+  // let avgexpo = avg(Object.keys(expo).map(k => {return expo[k]}));
 
   let stdev = mapzip(teams, t => {return std(tm[t].map(score => {return score/2+mod[t]}))});
 

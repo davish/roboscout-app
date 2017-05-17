@@ -9,7 +9,9 @@ export default class MatchList extends Component {
   render() {
     let rows = [];
     for (let i = 0; i < this.props.matches.length; i++) {
-      rows.push((<MatchInput key={this.props.matches[i].roundNum}
+      let roundNum = this.props.matches[i].roundNum;
+      rows.push((<MatchInput key={roundNum}
+                             probability={this.props.predictions[roundNum]}
                              match={this.props.matches[i]}
                              updateMatch={this.props.updateMatch(i)} />))
     }

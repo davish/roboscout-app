@@ -2,7 +2,7 @@
  * Created by davis on 5/4/17.
  */
 import React, { Component } from 'react';
-import {FormControl} from 'react-bootstrap'
+import {FormControl, OverlayTrigger, Tooltip} from 'react-bootstrap'
 
 
 export default class MatchInput extends Component {
@@ -14,12 +14,32 @@ export default class MatchInput extends Component {
     }
   }
 
+  getColor(prob) {
+    if (!prob)
+      return {'backgroundColor': 'rgba(255, 255, 255, 1)'};
+
+    let q = Math.abs(prob.red-prob.blue)/100;
+
+    if (prob.red > prob.blue)
+      return {'backgroundColor': 'rgba(255, 73, 82, '+q+')'};
+    else
+      return {'backgroundColor': 'rgba(100, 149, 237, '+q+')'};
+
+  }
+
   render() {
+    let tooltip;
+    if (this.props.probability)
+      tooltip = (<Tooltip id="tooltip">Red: {Math.round(this.props.probability.red*10)/10}% Blue: {Math.round(this.props.probability.blue*10)/10}%</Tooltip>)
+    else
+      tooltip = (<Tooltip id="tooltip">No Prediction Available.</Tooltip>)
     return (
-      <tr>
+      <tr style={this.getColor(this.props.probability)}>
+        <OverlayTrigger placement="top" overlay={tooltip}>
         <td>
           {this.props.match.roundNum}
         </td>
+        </OverlayTrigger>
         <td><FormControl type="text" className="in" value={this.props.match.red1 || '0000'} onChange={this.change('red1')}  /></td>
         <td><FormControl type="text" className="in" value={this.props.match.red2 || '0000'} onChange={this.change('red2')} /></td>
         <td><FormControl type="text" className="in" value={this.props.match.blue1 || '0000'} onChange={this.change('blue1')} /></td>

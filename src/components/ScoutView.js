@@ -4,33 +4,26 @@
 import React, {Component} from 'react';
 import MatchList from './MatchList';
 import RankedList from './RankedList';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
 
 export default class ScoutView extends Component {
   constructor(props) {
     super(props);
     this.state = {
       matches: [
-        {
-          roundNum: 1,
-          red1: 4174,
-          red2: 6051,
-          blue1: 5069,
-          blue2: 9371,
-          redscore: 150,
-          bluescore: 100
-        },
-        {
-          roundNum: 2,
-          red1: 4174,
-          red2: 5069,
-          blue1: 6051,
-          blue2: 9371,
-          redscore: 200,
-          bluescore: 75
-        }
-      ]
+      ],
+      predictions: {}
     }
+  }
+
+  componentDidMount() {
+    fetch('/api/tournament/1')
+      .then(r => {
+        return r.json()
+      })
+      .then(result => {
+        this.setState({matches: result['tournament']})
+      })
   }
 
   addMatch() {
@@ -47,12 +40,31 @@ export default class ScoutView extends Component {
     };
   }
 
+  getPredictions(startRound) {
+    fetch('/api/tournament/1/prediction?start='+startRound)
+      .then(r => {
+        return r.json()
+      })
+      .then(response => {
+        this.setState({'predictions': response.data});
+      })
+  }
+
   render() {
     return (
       <Grid>
         <Row>
+          <Col sm={3}>
+            <form onSubmit={e => {e.preventDefault(); this.getPredictions(e.target.round.value);}}>
+              <FormControl type="number" name="round" placeholder="Predict from" />
+              <Button type="submit">Predict Matches</Button>
+            </form>
+          </Col>
+        </Row>
+        <Row>
           <Col sm={9}>
             <MatchList matches={this.state.matches}
+                       predictions={this.state.predictions}
                        updateMatch={this.updateMatch.bind(this)}
                        addMatch={this.addMatch.bind(this)} />
 

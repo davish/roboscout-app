@@ -35,7 +35,7 @@ export default class RankedList extends Component {
         <thead>
           <tr>
             <th>Team</th>
-            <th>Expected Output</th>
+            <th>ExpO</th>
             <th>Variance</th>
           </tr>
         </thead>
