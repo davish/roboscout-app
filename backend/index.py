@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
 import os
 import csv
+import json
+
+from flask import Flask, request, jsonify
+from flask.ext.sqlalchemy import SQLAlchemy
 
 from models import *
-
 from algorithm import roboscout, match_simulation
 
 app = Flask(__name__)
@@ -33,13 +34,20 @@ def hello():
 def getCSV():  
   return jsonify({'tournament': matchlist})
 
-@app.route('/api/tournament/1/prediction', methods=['GET'])
+@app.route('/api/tournament/1/predict/prelims', methods=['GET'])
 def predict_tournament():
   start = int(request.args.get('start', len(matchlist)*2/3))
   scout = roboscout.scout(matchlist[:start])
   pred = match_simulation.simulate_matchlist(matchlist, scout, start)
   r = {p['roundNum']: {'red': p['prediction'][0], 'blue': p['prediction'][1]} for p in pred}
   return jsonify({'data': r})
+
+@app.route('/api/tournament/1/predict/playoffs', methods=['GET'])
+def predict_playoffs():
+  alliances = json.loads(request.args.get('json', '{}'))['alliances']
+  scout = roboscout.scout(matchlist)
+  res = match_simulation.simulate_playoffs(alliances, scout)
+  return jsonify({'results': res})
 
 @app.route('/api/tournament/<t>/update-round', methods=['POST'])
 def update_round(t):
