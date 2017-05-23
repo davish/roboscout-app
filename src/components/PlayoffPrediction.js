@@ -58,7 +58,7 @@ export default class PlayoffPrediction extends Component {
            <Button type="submit">Predict Playoffs</Button>
         </form>
 
-        <Bracket alliances={this.state.alliances} prediction={this.state.prediction} />
+        <Bracket alliances={this.state.alliances} prediction={this.state.prediction} snapshot={this.state.snapshot} />
       </div>
 
     )
