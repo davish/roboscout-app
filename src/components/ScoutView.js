@@ -8,6 +8,8 @@ import RankedList from './RankedList';
 import {Grid, Row, Col, Button, FormControl, Navbar, NavItem, Nav} from 'react-bootstrap';
 import Sidebar from 'react-sidebar'
 
+import getRankings from '../algorithms/matchlist';
+
 
 import PlayoffPrediction from './PlayoffPrediction'
 
@@ -59,7 +61,7 @@ export default class ScoutView extends Component {
 
   render() {
     const sidebar = (
-      <div>
+      <div style={{backgroundColor: 'white'}}>
         <form onSubmit={e => {e.preventDefault(); this.getPredictions(e.target.round.value);}}>
           <FormControl type="number" name="round" placeholder="Predict from" />
           <Button type="submit">Predict Matches</Button>
@@ -68,29 +70,14 @@ export default class ScoutView extends Component {
       </div>
     );
     return (
-      <Sidebar sidebar={sidebar}>
-        <Navbar>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <a href="#">Roboscout</a>
-            </Navbar.Brand>
-          </Navbar.Header>
-          <Nav>
-            <NavItem eventKey={1} href="#" onClick={this.setState({sidebar: !this.state.sidebar})}>Prediction</NavItem>
-          </Nav>
-        </Navbar>
+      <div>
+        <Sidebar sidebar={sidebar} open={this.state.sidebar} pullRight={true} onSetOpen={open => {this.setState({sidebar: open}); console.log(getRankings(this.state.matches));}}>
         <Grid>
-          {/*<Row>*/}
-            {/*<Col sm={6}>*/}
-              {/*<PlayoffPrediction/>*/}
-            {/*</Col>*/}
-            {/*<Col sm={6}>*/}
-              {/*<form onSubmit={e => {e.preventDefault(); this.getPredictions(e.target.round.value);}}>*/}
-              {/*<FormControl type="number" name="round" placeholder="Predict from" />*/}
-              {/*<Button type="submit">Predict Matches</Button>*/}
-              {/*</form>*/}
-            {/*</Col>*/}
-          {/*</Row>*/}
+          <Row>
+            <Col sm={2} smOffset={10}>
+              <Button onClick={() => {this.setState({sidebar: !this.state.sidebar})}}>Slide</Button>
+            </Col>
+          </Row>
           <Row>
             <Col sm={8}>
               <MatchList matches={this.state.matches}
@@ -105,7 +92,8 @@ export default class ScoutView extends Component {
 
           </Row>
         </Grid>
-      </Sidebar>
+        </Sidebar>
+      </div>
     )
   }
 }

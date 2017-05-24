@@ -7,7 +7,7 @@ import scout from '../algorithms/roboscout'
 
 export default class RankedList extends Component {
   render() {
-    let s = scout(this.props.matches);
+    let s = this.props.scout;
     let rank = [];
 
     let teams = Object.keys(s);
