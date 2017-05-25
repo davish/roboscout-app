@@ -2,9 +2,9 @@
  * Created by davis on 5/24/17.
  */
 import React, {Component} from 'react';
-import scout from '../algorithms/roboscout'
+import scout from '../../algorithms/roboscout'
 import RankedList from './RankedList'
-import getRankings from '../algorithms/matchlist'
+import getRankings from '../../algorithms/matchlist'
 
 import {Button} from 'react-bootstrap'
 

@@ -2,14 +2,14 @@
  * Created by davis on 5/7/17.
  */
 import React, {Component} from 'react';
-import MatchList from './MatchList';
-import RankPanel from './RankPanel';
+import MatchList from './scout/MatchList';
+import RankPanel from './scout/RankPanel';
 
 import {Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
 import Sidebar from 'react-sidebar'
 
-import PlayoffPrediction from './PlayoffPrediction'
-import LoadingButton from './LoadingButton';
+import PlayoffPrediction from './scout/PlayoffPrediction'
+import LoadingButton from './scout/LoadingButton';
 
 export default class ScoutView extends Component {
   constructor(props) {

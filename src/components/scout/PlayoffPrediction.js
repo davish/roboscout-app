@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 
 import AllianceInput from './AllianceInput';
-import Bracket from './bracket/Bracket';
+import Bracket from '../bracket/Bracket';
 import LoadingButton from './LoadingButton';
 export default class PlayoffPrediction extends Component {
 
