@@ -40,10 +40,10 @@ export default class Bracket extends Component {
 
   getSFPrediciton(sf) {
     let alliance;
-    if (sf == 'SF1') {
+    if (sf === 'SF1') {
       alliance = this.props.alliances[0];
     }
-    else if (sf == 'SF2') {
+    else if (sf === 'SF2') {
       alliance = this.props.alliances[1];
     }
     return this.props.prediction ? this.props.prediction[alliance.join('-')]['SF'] : null;
@@ -51,18 +51,18 @@ export default class Bracket extends Component {
 
   getFinalsRedAlliance() {
     if (this.props.alliances) {
-      if (this.state.SF1 == 'red')
+      if (this.state.SF1 === 'red')
         return this.props.alliances[0];
-      else if (this.state.SF1 == 'blue')
+      else if (this.state.SF1 === 'blue')
         return this.props.alliances[3];
       return [];
     }
   }
   getFinalsBlueAlliance() {
     if (this.props.alliances) {
-      if (this.state.SF2 == 'red')
+      if (this.state.SF2 === 'red')
         return this.props.alliances[1];
-      else if (this.state.SF2 == 'blue')
+      else if (this.state.SF2 === 'blue')
         return this.props.alliances[2];
       return [];
     }
@@ -86,9 +86,9 @@ export default class Bracket extends Component {
   }
 
   getWinner() {
-    if (this.getFinalsColor() == 'red')
+    if (this.getFinalsColor() === 'red')
       return this.getFinalsRedAlliance();
-    else if (this.getFinalsColor() == 'blue')
+    else if (this.getFinalsColor() === 'blue')
       return this.getFinalsBlueAlliance();
     return [];
   }

@@ -3,9 +3,9 @@
  */
 import React, {Component} from 'react';
 import MatchList from './MatchList';
-import RankedList from './RankedList';
+import RankPanel from './RankPanel';
 
-import {Grid, Row, Col, Button, FormControl, Navbar, NavItem, Nav} from 'react-bootstrap';
+import {Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
 import Sidebar from 'react-sidebar'
 
 import getRankings from '../algorithms/matchlist';
@@ -87,7 +87,7 @@ export default class ScoutView extends Component {
 
             </Col>
             <Col sm={4}>
-              <RankedList matches={this.state.matches}/>
+              <RankPanel matches={this.state.matches}/>
             </Col>
 
           </Row>

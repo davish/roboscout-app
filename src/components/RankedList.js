@@ -3,44 +3,29 @@
  */
 import React, {Component} from 'react';
 import {Table} from 'react-bootstrap';
-import scout from '../algorithms/roboscout'
 
 export default class RankedList extends Component {
   render() {
-    let s = this.props.scout;
-    let rank = [];
+    let body = this.props.rank.map((r, i) => {
+      let percentile = 0;
+      if (this.props.highlight)
+        percentile = r.pop();
 
-    let teams = Object.keys(s);
-    for (let i = 0; i < teams.length; i++) {
-      let d = s[teams[i]];
-      d.team = teams[i];
-      rank.push(d);
-    }
-
-    rank = rank.sort((a, b) => {
-      return b.expo - a.expo;
+      return (<tr style={{color: percentile > this.props.threshold ? 'red': ''}} key={i}>{r.map((b, j) => {
+        return <td key={j}>{b}</td>})
+      }</tr>)
     });
-
-    let output = [];
-
-    for (let i=0; i < rank.length; i++)
-      output.push(<tr key={i}>
-        <td>{rank[i].team}</td>
-        <td>{Math.round(rank[i].expo)}</td>
-        <td>{Math.round(rank[i].variance)}</td>
-      </tr>)
-
     return (
       <Table striped condensed hover>
         <thead>
           <tr>
-            <th>Team</th>
-            <th>ExpO</th>
-            <th>Variance</th>
+            {this.props.headers.map((h, i) => {return (
+              <th key={i}>{h}</th>
+            )})}
           </tr>
         </thead>
         <tbody>
-        {output}
+        {body}
         </tbody>
       </Table>
     )

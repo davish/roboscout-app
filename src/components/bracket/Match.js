@@ -8,15 +8,15 @@ import {Tooltip, OverlayTrigger} from 'react-bootstrap'
 export default class Match extends Component {
   render() {
     let color = 'black';
-    if (this.props.winner == 'blue')
+    if (this.props.winner === 'blue')
       color = 'blue';
-    else if (this.props.winner == 'red')
+    else if (this.props.winner === 'red')
       color = 'red';
     let branch = <span style={{position: 'relative', bottom: '33px', right: '3px'}}>|<br />|<br />|<br />|</span>;
     let sidebranch1 = '';
     let sidebranch2 = '';
 
-    if (this.props.round == 'finals') {
+    if (this.props.round === 'finals') {
       // branch = '';
       sidebranch1 = <span style={{position: 'relative', bottom: '20px'}}>––––––</span>;
       sidebranch2 = <span style={{position: 'relative', bottom: '20px'}}>–––––</span>;
@@ -27,8 +27,8 @@ export default class Match extends Component {
       tooltip = <Tooltip id="tooltip"> Red: {Math.round(this.props.prediction.prob[0]*10)/10}% Blue: {Math.round(this.props.prediction.prob[1]*10)/10}% </Tooltip>;
 
     return (
-      <OverlayTrigger placement={this.props.round == 'finals' ? 'right' : 'top'} overlay={tooltip}>
-        <div style={{'display': 'inline-block', position: 'relative', bottom: this.props.round == 'finals' ? '70px' : '0px'}}>
+      <OverlayTrigger placement={this.props.round === 'finals' ? 'right' : 'top'} overlay={tooltip}>
+        <div style={{'display': 'inline-block', position: 'relative', bottom: this.props.round === 'finals' ? '70px' : '0px'}}>
           {/*{topBranch}*/}
 
           {sidebranch1}
