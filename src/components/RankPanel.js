@@ -14,7 +14,8 @@ export default class RankPanel extends Component {
     this.state = {
       scout: {},
       showscout: true,
-      expos: {}
+      expos: {},
+      threshold: 90
     }
   }
 
@@ -76,13 +77,17 @@ export default class RankPanel extends Component {
 
     return (
       <div>
-        <Button bsSize="xsmall" onClick={() => {this.setState({showscout: !this.state.showscout})}}>
+        <Button style={{float: 'left'}} bsSize="xsmall" onClick={() => {this.setState({showscout: !this.state.showscout})}}>
           {this.state.showscout ? 'Show Rankings' : 'Show Roboscout'}
         </Button>
+        <input type="number"
+               style={{display: this.state.showscout ? 'none': '', width: '40px', float: 'right'}}
+               value={this.state.threshold}
+               onChange={e => {this.setState({threshold: e.target.value})}} />
         <RankedList headers={headers}
                     rank={rank}
                     highlight={highlightTopTenth}
-                    threshold={90} />
+                    threshold={this.state.threshold} />
       </div>
     )
   }

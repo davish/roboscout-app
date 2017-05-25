@@ -6,6 +6,7 @@ import {Button} from 'react-bootstrap';
 
 import AllianceInput from './AllianceInput';
 import Bracket from './bracket/Bracket';
+import LoadingButton from './LoadingButton';
 export default class PlayoffPrediction extends Component {
 
   constructor(props) {
@@ -18,7 +19,8 @@ export default class PlayoffPrediction extends Component {
         ['7129', '7244', '9794']
       ],
       prediction: null,
-      snapshot: null
+      snapshot: null,
+      loading: false
     }
   }
 
@@ -37,13 +39,13 @@ export default class PlayoffPrediction extends Component {
     const form = e.target;
     e.preventDefault();
     const payload = {alliances: this.state.alliances};
+    this.setState({loading: true});
     fetch('/api/tournament/1/predict/playoffs?json='+encodeURIComponent(JSON.stringify(payload)))
       .then(r => {
         return r.json();
       })
       .then(res => {
-        console.log(res);
-        this.setState({prediction: res['results'][0], snapshot: res['results'][1]})
+        this.setState({loading: false, prediction: res['results'][0], snapshot: res['results'][1]})
       });
   }
 
@@ -55,7 +57,7 @@ export default class PlayoffPrediction extends Component {
            <AllianceInput teams={this.state.alliances[1]} onChange={this.change(2)} />
            <AllianceInput teams={this.state.alliances[2]} onChange={this.change(3)} />
            <AllianceInput teams={this.state.alliances[3]} onChange={this.change(4)} />
-           <Button type="submit">Predict Playoffs</Button>
+           <LoadingButton type="submit" loading={this.state.loading}>Predict Playoffs</LoadingButton>
         </form>
 
         <Bracket alliances={this.state.alliances} prediction={this.state.prediction} snapshot={this.state.snapshot} />

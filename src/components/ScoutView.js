@@ -8,10 +8,8 @@ import RankPanel from './RankPanel';
 import {Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
 import Sidebar from 'react-sidebar'
 
-import getRankings from '../algorithms/matchlist';
-
-
 import PlayoffPrediction from './PlayoffPrediction'
+import LoadingButton from './LoadingButton';
 
 export default class ScoutView extends Component {
   constructor(props) {
@@ -49,12 +47,13 @@ export default class ScoutView extends Component {
   }
 
   getPredictions(startRound) {
+    this.setState({loading: true});
     fetch('/api/tournament/1/predict/prelims?start='+startRound)
       .then(r => {
         return r.json()
       })
       .then(response => {
-        this.setState({'predictions': response.data});
+        this.setState({loading: false, 'predictions': response.data});
         location.hash = '#' + startRound;
       })
   }
@@ -64,18 +63,18 @@ export default class ScoutView extends Component {
       <div style={{backgroundColor: 'white'}}>
         <form onSubmit={e => {e.preventDefault(); this.getPredictions(e.target.round.value);}}>
           <FormControl type="number" name="round" placeholder="Predict from" />
-          <Button type="submit">Predict Matches</Button>
+          <LoadingButton loading={this.state.loading} type="submit">Predict Matches</LoadingButton>
         </form>
         <PlayoffPrediction />
       </div>
     );
     return (
       <div>
-        <Sidebar sidebar={sidebar} open={this.state.sidebar} pullRight={true} onSetOpen={open => {this.setState({sidebar: open}); console.log(getRankings(this.state.matches));}}>
+        <Sidebar sidebar={sidebar} open={this.state.sidebar} pullRight={true} onSetOpen={open => {this.setState({sidebar: open})}}>
         <Grid>
           <Row>
             <Col sm={2} smOffset={10}>
-              <Button onClick={() => {this.setState({sidebar: !this.state.sidebar})}}>Slide</Button>
+              <Button onClick={() => {this.setState({sidebar: !this.state.sidebar})}}>Predictions</Button>
             </Col>
           </Row>
           <Row>
