@@ -26,11 +26,11 @@ export default class MatchList extends Component {
           <th>Blue 2</th>
           <th>Red Score</th>
           <th>Blue Score</th>
-          <th><Button onClick={this.props.addMatch}>+</Button></th>
         </tr>
         </thead>
         <tbody>
         {rows}
+        <tr><td><Button onClick={this.props.addMatch}>+</Button></td></tr>
         </tbody>
       </Table>
     )
