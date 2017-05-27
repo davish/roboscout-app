@@ -1,7 +1,8 @@
-from index import db
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+
+from index import db
 
 class Match(db.Model):
   __tablename__ = 'matches'
@@ -17,33 +18,27 @@ class Match(db.Model):
   red_score = db.Column(db.Integer)
   blue_score = db.Column(db.Integer)
 
-  red_probability = db.Column(db.Float)
-  blue_probability = db.Column(db.Float)
-
   tournament_id = db.Column(db.Integer, ForeignKey('tournaments.id'))
-  tournament = relationship('Tournament', back_populates='matches')
+  tournament = relationship('Tournament', backref='matches')
 
-  def init(self, m, tournament):
-    self.round_num = m['round_num']
-    self.red1 = m['red1']
-    self.red2 = m['red2']
-    self.blue1 = m['blue1']
-    self.blue2 = m['blue2']
-
-    self.red_score = m.get('red_score', 0)
-    self.blue_score = m.get('blue_score', 0)
-
-    self.red_probability = m.get('red_probability', 0)
-    self.blue_probability = m.get('blue_probability', 0)
-
-    self.tournament_id = tournament
+  def to_dict(self):
+    return {
+    'red1': self.red1,
+    'red2': self.red2,
+    'blue1': self.blue1,
+    'blue2': self.blue2,
+    'redscore': self.red_score,
+    'bluescore': self.blue_score,
+    'roundNum': self.round_num
+    }
 
   def __repr__(self):
-    return '<id {}>'.format(self.id)
+    return '<Match {}>'.format(self.id)
 
 class Tournament(db.Model):
   __tablename__ = 'tournaments'
   id = db.Column(db.Integer, primary_key=True)
-
+  name = db.Column(db.String())
+  date_created = db.Column(db.DateTime, server_default=db.text('NOW()'))
   def __repr__(self):
-    return '<id {}>'.format(self.id)
+    return '<Tournament {}>'.format(self.id)

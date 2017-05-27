@@ -40,7 +40,7 @@ export default class PlayoffPrediction extends Component {
     e.preventDefault();
     const payload = {alliances: this.state.alliances};
     this.setState({loading: true});
-    fetch('/api/tournament/1/predict/playoffs?json='+encodeURIComponent(JSON.stringify(payload)))
+    fetch('/api/tournament/'+this.props.tournament+'/predict/playoffs?json='+encodeURIComponent(JSON.stringify(payload)))
       .then(r => {
         return r.json();
       })
