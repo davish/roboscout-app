@@ -3,7 +3,7 @@
  */
 import React, {Component} from 'react';
 
-import {Button, Grid, Row, Col, FormControl} from 'react-bootstrap';
+import {Button, Grid, Row, Col, FormControl, FormGroup, InputGroup} from 'react-bootstrap';
 import {Link} from 'react-router-dom'
 
 export default class SelectTournament extends Component {
@@ -60,8 +60,14 @@ export default class SelectTournament extends Component {
           </Col>
           <Col sm={3}>
             <form onSubmit={this.newTournament.bind(this)}>
-              <FormControl placeholder="Tournament Name" value={this.state.newName} onChange={e => {this.setState({newName: e.target.value})}} />
-              <Button type="submit">+</Button>
+              <FormGroup>
+                <InputGroup>
+                  <FormControl placeholder="Tournament Name" value={this.state.newName} onChange={e => {this.setState({newName: e.target.value})}} />
+                  <InputGroup.Button>
+                    <Button type="submit">+</Button>
+                  </InputGroup.Button>
+                </InputGroup>
+              </FormGroup>
             </form>
           </Col>
         </Row>
