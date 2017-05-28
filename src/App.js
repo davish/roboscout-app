@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {BrowserRouter, Route, Link} from 'react-router-dom'
+import {Navbar, Nav, NavItem} from 'react-bootstrap'
+
 import './App.css';
 import ScoutView from './components/ScoutView';
 import SelectTournament from './components/SelectTournament'
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -20,15 +21,16 @@ class App extends Component {
   }
 
   render() {
-
-    let body = <ScoutView tournament={this.state.tournament} back={() => {this.setState({tournament: -1})}} />
-    if (this.state.tournament < 0) {
-      body = <SelectTournament selectTournament={this.selectTournament.bind(this)}/>
-    }
-
     return (
       <BrowserRouter>
         <div className="App">
+          <Navbar>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <Link to="/">Roboscout</Link>
+              </Navbar.Brand>
+            </Navbar.Header>
+          </Navbar>
           <Route exact path="/" component={SelectTournament} />
           <Route path="/tournament/:tournament" component={ScoutView} />
         </div>

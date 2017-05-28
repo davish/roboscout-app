@@ -16,14 +16,16 @@ db = SQLAlchemy(app)
 from models import *
 
 def enforce_types(m):
-  try:
-    m['blue_score'] = int(m['blue_score'])
-  except ValueError:
-    m['blue_score'] = None
-  try:
-    m['red_score'] = int(m['red_score'])
-  except ValueError:
-    m['red_score'] = None
+  if m['blue_score'] is not None:
+    try:
+      m['blue_score'] = int(m['blue_score'])
+    except ValueError:
+      m['blue_score'] = None
+  if m['red_score'] is not None:
+    try:
+      m['red_score'] = int(m['red_score'])
+    except ValueError:
+      m['red_score'] = None
   
   return m
 
@@ -50,19 +52,25 @@ def update_match(m, t, batch_update=False):
 
   return match
 
-def get_filled_matches():
+def match_to_jsonable(t, q):
+  matches = q.filter_by(tournament=t).order_by(Match.round_num)
+  return map(lambda m: m.to_dict(), matches)
+
+def filled_matches(t):
   q = db.session.query(Match)
   for role in ['red1', 'red2', 'blue1', 'blue2']:
     q = q.filter(getattr(Match, role).isnot(None))
-  return q
+  return match_to_jsonable(t, q)
 
-def get_completed_matches():
-  return get_filled_matches().filter(Match.red_score.isnot(None)).filter(Match.blue_score.isnot(None))
+def completed_matches(t):
+  q = db.session.query(Match)
+  for role in ['red1', 'red2', 'blue1', 'blue2', 'red_score', 'blue_score']:
+    q = q.filter(getattr(Match, role).isnot(None))
+  return match_to_jsonable(t, q)
 
-def get_matches(t, completed=True):
-  q = get_completed_matches() if completed else get_filled_matches()
-  matches = q.filter_by(tournament=t).order_by(Match.round_num)
-  return map(lambda m: m.to_dict(), matches)
+def all_matches(t):
+  q = db.session.query(Match)
+  return match_to_jsonable(t, q)
 
 
 @app.route("/api/")
@@ -75,7 +83,7 @@ def list_tournaments():
 
 @app.route('/api/tournament/<t>/predict/prelims', methods=['GET'])
 def predict_tournament(t):
-  matchlist = get_matches(db.session.query(Tournament).get(t))
+  matchlist = filled_matches(db.session.query(Tournament).get(t))
 
   start = int(request.args.get('start', len(matchlist)*2/3))
   scout = roboscout.scout(matchlist[:start])
@@ -85,7 +93,7 @@ def predict_tournament(t):
 
 @app.route('/api/tournament/<t>/predict/playoffs', methods=['GET'])
 def predict_playoffs(t):
-  matchlist = get_matches(db.session.query(Tournament).get(t))
+  matchlist = completed_matches(db.session.query(Tournament).get(t))
 
   alliances = json.loads(request.args.get('json', '{}'))['alliances']
   scout = roboscout.scout(matchlist)
@@ -105,7 +113,7 @@ def create_tournament():
 @app.route('/api/tournament/<t>')
 def get_tournament(t):
   tournament = db.session.query(Tournament).get(t)
-  r = {'name': tournament.name, 'id': tournament.id, 'matches': get_matches(tournament)}
+  r = {'name': tournament.name, 'id': tournament.id, 'matches': all_matches(tournament)}
   return jsonify(r)
 
 @app.route('/api/tournament/<t>/update-round', methods=['POST'])

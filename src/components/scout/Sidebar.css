@@ -1,0 +1,27 @@
+.sidebar {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  overflow-x: hidden;
+  z-index: 1;
+  background-color: white;
+  width: 460px;
+  transition: right 0.5s ease-out;
+}
+
+.example-leave {
+  right: 0;
+}
+
+.example-leave.example-leave-active {
+  right: -460px;
+}
+
+.example-enter {
+  right: -460px;
+}
+
+.example-enter.example-enter-active {
+  right: 0;
+}
