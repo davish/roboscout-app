@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 
 import {Button, Grid, Row, Col, FormControl} from 'react-bootstrap';
+import {Link} from 'react-router-dom'
 
 export default class SelectTournament extends Component {
 
@@ -53,7 +54,7 @@ export default class SelectTournament extends Component {
           <Col sm={3}>
             <ul>
               {this.state.tournaments.map((t, i) => {
-                return <li key={t.id}><a href="#" onClick={this.props.selectTournament(t.id)}>{t.name}</a></li>
+                return <li key={t.id}><Link to={'/tournament/'+t.id}>{t.name}</Link></li>
               })}
             </ul>
           </Col>

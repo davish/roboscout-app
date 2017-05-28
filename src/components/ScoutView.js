@@ -22,7 +22,7 @@ export default class ScoutView extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/tournament/'+this.props.tournament)
+    fetch('/api/tournament/'+this.props.match.params.tournament)
       .then(r => {
         return r.json()
       })
@@ -32,7 +32,7 @@ export default class ScoutView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    fetch('/api/tournament/'+this.props.tournament+'/update', {
+    fetch('/api/tournament/'+this.props.match.params.tournament+'/update', {
       method: 'post',
       headers: {
         'Accept': 'application/json, text/plain, */*',
@@ -58,7 +58,7 @@ export default class ScoutView extends Component {
 
   getPredictions(startRound) {
     this.setState({loading: true});
-    fetch('/api/tournament/'+this.props.tournament+'/predict/prelims?start='+startRound)
+    fetch('/api/tournament/'+this.props.match.params.tournament+'/predict/prelims?start='+startRound)
       .then(r => {
         return r.json()
       })
@@ -75,7 +75,7 @@ export default class ScoutView extends Component {
           <FormControl type="number" name="round" placeholder="Predict from" />
           <LoadingButton loading={this.state.loading} type="submit">Predict Matches</LoadingButton>
         </form>
-        <PlayoffPrediction tournament={this.props.tournament} />
+        <PlayoffPrediction tournament={this.props.match.params.tournament} />
       </div>
     );
     return (
