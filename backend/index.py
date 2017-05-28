@@ -15,6 +15,17 @@ db = SQLAlchemy(app)
 
 from models import *
 
+def enforce_types(m):
+  try:
+    m['blue_score'] = int(m['blue_score'])
+  except ValueError:
+    m['blue_score'] = None
+  try:
+    m['red_score'] = int(m['red_score'])
+  except ValueError:
+    m['red_score'] = None
+  
+  return m
 
 def update_match(m, t, batch_update=False):
   m['round_num'] = m.get('roundNum')
@@ -23,6 +34,8 @@ def update_match(m, t, batch_update=False):
   if 'redscore' in m : del m['redscore']
   m['blue_score'] = m.get('bluescore')
   if 'bluescore' in m : del m['bluescore']
+
+  m = enforce_types(m)
 
   match = Match(tournament_id=int(t), **m)
   q = db.session.query(Match).filter_by(tournament_id=t, round_num=m['round_num']).first()
@@ -37,9 +50,19 @@ def update_match(m, t, batch_update=False):
 
   return match
 
-def get_matches(t):
-  matches = db.session.query(Match).filter_by(tournament=t).order_by(Match.round_num)
-  return map(lambda m: m.to_dict(), matches.order_by(Match.round_num))
+def get_filled_matches():
+  q = db.session.query(Match)
+  for role in ['red1', 'red2', 'blue1', 'blue2']:
+    q = q.filter(getattr(Match, role).isnot(None))
+  return q
+
+def get_completed_matches():
+  return get_filled_matches().filter(Match.red_score.isnot(None)).filter(Match.blue_score.isnot(None))
+
+def get_matches(t, completed=True):
+  q = get_completed_matches() if completed else get_filled_matches()
+  matches = q.filter_by(tournament=t).order_by(Match.round_num)
+  return map(lambda m: m.to_dict(), matches)
 
 
 @app.route("/api/")
