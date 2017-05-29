@@ -2,7 +2,7 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
-from index import db
+from app import db
 
 
 class Match(db.Model):

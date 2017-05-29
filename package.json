@@ -1,0 +1,8 @@
+{
+  "name": "roboscout-app",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && cd ..",
+    "deploy": "cp -a frontend/build/. backend/site/",
+    "postinstall": "npm run build && npm run deploy && echo 'Client built!'"
+  }
+}

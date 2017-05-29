@@ -2,7 +2,7 @@ import os
 import csv
 import json
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
@@ -15,6 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from models import *
+
 
 def enforce_types(m):
     if m['blue_score'] is not None:
@@ -148,6 +149,11 @@ def batch_update_tournament(t):
 
     db.session.commit()
     return jsonify({'result': 'success'})
+
+
+@app.route('/<path:path>')
+def catchall(path):
+    return send_file('site/index.html')
 
 if __name__ == "__main__":
     app.run()
