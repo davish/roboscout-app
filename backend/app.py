@@ -2,7 +2,7 @@ import os
 import csv
 import json
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 
@@ -151,8 +151,13 @@ def batch_update_tournament(t):
     return jsonify({'result': 'success'})
 
 
-@app.route('/<path:path>')
-def catchall(path):
+@app.route('/roboscout-app/<path:path>')
+def serve_assets(path):
+    return send_from_directory('site', path)
+
+
+@app.route('/')
+def serve_index():
     return send_file('site/index.html')
 
 if __name__ == "__main__":
