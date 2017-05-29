@@ -40,5 +40,7 @@ class Tournament(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String())
   date_created = db.Column(db.DateTime, server_default=db.text('NOW()'))
+  season = db.Column(db.String(), server_default='2016-2017')
+
   def __repr__(self):
     return '<Tournament {}>'.format(self.id)

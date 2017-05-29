@@ -3,6 +3,7 @@
  */
 import React, {Component} from 'react'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+import {Button} from 'react-bootstrap'
 import './Sidebar.css'
 export default class Sidebar extends Component {
   render() {
@@ -10,7 +11,12 @@ export default class Sidebar extends Component {
       <CSSTransitionGroup transitionName="example"
                           transitionEnterTimeout={500}
                           transitionLeaveTimeout={500}>
-        {this.props.show ? <div className="sidebar">{this.props.children}</div> : null}
+        {this.props.show ?
+          <div className="sidebar">
+            <Button style={{float: 'right'}} bsStyle="link" onClick={this.props.toggle}>x</Button> <br />
+            {this.props.children}
+          </div>
+          : null}
       </CSSTransitionGroup>
     )
   }

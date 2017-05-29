@@ -4,6 +4,7 @@ import json
 
 from flask import Flask, request, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 
 from algorithm import roboscout, match_simulation
 
@@ -79,7 +80,7 @@ def hello():
 
 @app.route('/api/tournament', methods=['GET'])
 def list_tournaments():
-  return jsonify({'tournaments': map(lambda t: {'name': t.name, 'id': t.id}, db.session.query(Tournament).all())})
+  return jsonify({'tournaments': map(lambda t: {'name': t.name, 'id': t.id, 'season': t.season}, db.session.query(Tournament).all())})
 
 @app.route('/api/tournament/<t>/predict/prelims', methods=['GET'])
 def predict_tournament(t):
@@ -135,7 +136,6 @@ def batch_update_tournament(t):
 
   db.session.commit()
   return jsonify({'result': 'success'})
-
 
 if __name__ == "__main__":
   app.run()

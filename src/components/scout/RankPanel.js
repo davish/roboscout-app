@@ -80,6 +80,9 @@ export default class RankPanel extends Component {
         <Button style={{float: 'left'}} bsSize="xsmall" onClick={() => {this.setState({showscout: !this.state.showscout})}}>
           {this.state.showscout ? 'Show Rankings' : 'Show Roboscout'}
         </Button>
+        <Button style={{float: 'right'}} bsSize="xsmall" onClick={this.props.toggleSidebar}>
+          Predictions
+        </Button>
         <input type="number"
                style={{display: this.state.showscout ? 'none': '', width: '40px', float: 'right'}}
                value={this.state.threshold}

@@ -4,7 +4,8 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col, Button, FormControl, Glyphicon} from 'react-bootstrap';
 
-import PredictionSidebar from './scout/PredictionSidebar'
+import PlayoffPrediction from './scout/PlayoffPrediction'
+import LoadingButton from './scout/LoadingButton';
 import MatchList from './scout/MatchList';
 import RankPanel from './scout/RankPanel';
 import Sidebar from './scout/Sidebar';
@@ -68,19 +69,10 @@ export default class ScoutView extends Component {
   }
 
   render() {
-    const sidebar = <PredictionSidebar tournament={this.props.match.params.tournament}
-                                       loading={this.state.loading}
-                                       getPredictions={this.getPredictions.bind(this)}
-    />;
 
     return (
       <div>
         <Grid>
-          <Row>
-            <Col sm={2} smOffset={10}>
-              <Button onClick={() => {this.setState({sidebar: !this.state.sidebar})}}>Predictions</Button>
-            </Col>
-          </Row>
           <Row>
             <Col sm={8}>
               <MatchList matches={this.state.matches}
@@ -90,12 +82,19 @@ export default class ScoutView extends Component {
 
             </Col>
             <Col sm={4}>
-              <RankPanel matches={this.state.matches}/>
+              <RankPanel matches={this.state.matches}
+                         toggleSidebar={() => {this.setState({sidebar: !this.state.sidebar})}} />
             </Col>
 
           </Row>
         </Grid>
-        <Sidebar show={this.state.sidebar}>{sidebar}</Sidebar>
+        <Sidebar show={this.state.sidebar} toggle={() => {this.setState({sidebar: !this.state.sidebar})}}>
+          <form onSubmit={e => {e.preventDefault(); this.getPredictions(e.target.round.value);}}>
+            <FormControl type="number" name="round" placeholder="Predict from" />
+            <LoadingButton loading={this.state.loading} type="submit">Predict Matches</LoadingButton>
+          </form>
+          <PlayoffPrediction tournament={this.props.match.params.tournament} />
+        </Sidebar>
       </div>
     )
   }
