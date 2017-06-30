@@ -87,7 +87,8 @@ def hello():
 
 @app.route('/api/tournament', methods=['GET'])
 def list_tournaments():
-    return jsonify({'tournaments': map(lambda t: {'name': t.name, 'id': t.id, 'season': t.season}, db.session.query(Tournament).all())})
+    return jsonify({'tournaments': map(lambda t: t.get_info(),
+                                       db.session.query(Tournament).order_by(Tournament.date_created.desc()).limit(10))})
 
 
 @app.route('/api/tournament/<t>/predict/prelims', methods=['GET'])
@@ -125,7 +126,7 @@ def create_tournament():
 @app.route('/api/tournament/<t>')
 def get_tournament(t):
     tournament = db.session.query(Tournament).get(t)
-    r = {'name': tournament.name, 'id': tournament.id, 'matches': all_matches(tournament)}
+    r = {'tournament': tournament.get_info(), 'matches': all_matches(tournament)}
     return jsonify(r)
 
 

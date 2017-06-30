@@ -3,20 +3,21 @@ import {BrowserRouter, Route, Link} from 'react-router-dom'
 import {Navbar, Nav, NavItem} from 'react-bootstrap'
 
 import './App.css';
-import ScoutView from './components/ScoutView';
-import SelectTournament from './components/SelectTournament'
+import ScoutView from './components/scout/ScoutView';
+import HomePage from './components/homepage/HomePage'
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tournament: -1
+      tournament: {}
     }
   }
 
-  selectTournament(id) {
+  selectTournament(t) {
     return () => {
-      this.setState({tournament: id});
+      this.setState({tournament: t});
     }
   }
 
@@ -24,14 +25,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Navbar>
-            <Navbar.Header>
-              <Navbar.Brand>
-                <Link to="/">Roboscout</Link>
-              </Navbar.Brand>
-            </Navbar.Header>
-          </Navbar>
-          <Route exact path="/" component={SelectTournament} />
+          <Route exact path="/" component={HomePage} />
           <Route path="/tournament/:tournament" component={ScoutView} />
         </div>
       </BrowserRouter>

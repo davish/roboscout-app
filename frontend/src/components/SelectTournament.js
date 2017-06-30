@@ -47,7 +47,6 @@ export default class SelectTournament extends Component {
 
     return (
       <Grid>
-
         <Row>
           <Col sm={3}>
             <ul>

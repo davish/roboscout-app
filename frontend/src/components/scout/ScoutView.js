@@ -2,13 +2,13 @@
  * Created by davis on 5/7/17.
  */
 import React, {Component} from 'react';
-import {Grid, Row, Col, Button, FormControl, Glyphicon} from 'react-bootstrap';
+import {Grid, Row, Col, Button, FormControl, PageHeader} from 'react-bootstrap';
 
-import PlayoffPrediction from './scout/PlayoffPrediction'
-import LoadingButton from './scout/LoadingButton';
-import MatchList from './scout/MatchList';
-import RankPanel from './scout/RankPanel';
-import Sidebar from './scout/Sidebar';
+import PlayoffPrediction from './PlayoffPrediction'
+import LoadingButton from './LoadingButton';
+import MatchList from './MatchList';
+import RankPanel from './RankPanel';
+import Sidebar from './Sidebar';
 
 export default class ScoutView extends Component {
   constructor(props) {
@@ -17,17 +17,19 @@ export default class ScoutView extends Component {
       matches: [
       ],
       predictions: {},
-      sidebar: false
+      sidebar: false,
+      metadata: {}
     }
   }
 
   componentDidMount() {
+    this.setState({metadata: {name: this.props.location.state.name || '', event_date: this.props.location.state.event_date || ''}})
     fetch('/api/tournament/'+this.props.match.params.tournament)
       .then(r => {
         return r.json()
       })
       .then(result => {
-        this.setState({matches: result.matches})
+        this.setState({matches: result.matches, metadata: result.tournament})
       })
   }
 
@@ -73,6 +75,11 @@ export default class ScoutView extends Component {
     return (
       <div>
         <Grid>
+            <h3>
+              {this.state.metadata.name}
+              &nbsp;
+              <small>{new Date(this.state.metadata.event_date).toDateString()}</small>
+            </h3>
           <Row>
             <Col sm={8}>
               <MatchList matches={this.state.matches}

@@ -41,8 +41,19 @@ class Tournament(db.Model):
     __tablename__ = 'tournaments'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
+    event_date = db.Column(db.DateTime, server_default=db.text('NOW()'))
     date_created = db.Column(db.DateTime, server_default=db.text('NOW()'))
     season = db.Column(db.String(), server_default='2016-2017')
+    region = db.Column(db.String())
+
+    def get_info(self):
+        return {
+            'name': self.name,
+            'event_date': self.event_date,
+            'season': self.season,
+            'region': self.region,
+            'id': self.id
+        }
 
     def __repr__(self):
         return '<Tournament {}>'.format(self.id)
