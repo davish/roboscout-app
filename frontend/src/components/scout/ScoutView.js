@@ -9,6 +9,9 @@ import LoadingButton from './LoadingButton';
 import MatchList from './MatchList';
 import RankPanel from './RankPanel';
 import Sidebar from './Sidebar';
+import Title from './Title'
+
+window.matchupdatetimeout = null;
 
 export default class ScoutView extends Component {
   constructor(props) {
@@ -34,14 +37,20 @@ export default class ScoutView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    fetch('/api/tournament/'+this.props.match.params.tournament+'/update', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({matches: this.state.matches})
-    })
+    clearTimeout(window.matchupdatetimeout);
+    window.matchupdatetimeout = setTimeout(() => {
+      fetch('/api/tournament/'+this.props.match.params.tournament+'/update', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          matches: this.state.matches,
+          tournament: this.state.metadata
+        })
+      })
+    }, 500)
   }
 
   addMatch() {
@@ -75,11 +84,10 @@ export default class ScoutView extends Component {
     return (
       <div>
         <Grid>
-            <h3>
-              {this.state.metadata.name}
-              &nbsp;
-              <small>{new Date(this.state.metadata.event_date).toDateString()}</small>
-            </h3>
+          <Title name={this.state.metadata.name} 
+                 event_date={this.state.metadata.event_date} 
+                 onChange={(e) => {let m = Object.assign({}, this.state.metadata); m.name = e.target.value; this.setState({metadata: m})}}
+          />
           <Row>
             <Col sm={8}>
               <MatchList matches={this.state.matches}

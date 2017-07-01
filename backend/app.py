@@ -141,12 +141,13 @@ def update_round(t):
 def batch_update_tournament(t):
     data = request.get_json()
     matches = data.get('matches', [])
-    name = data.get('name', None)
+    tournament = data.get('tournament', None)
     for match in matches:
         update_match(match, t, False)
-    if name is not None:
+    if tournament is not None:
         t = db.session.query(Tournament).get(t)
-        t.name = name
+        for attr, val in tournament.iteritems():
+            setattr(t, attr, val)
 
     db.session.commit()
     return jsonify({'result': 'success'})
