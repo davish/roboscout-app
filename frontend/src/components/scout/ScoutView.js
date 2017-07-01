@@ -2,7 +2,7 @@
  * Created by davis on 5/7/17.
  */
 import React, {Component} from 'react';
-import {Grid, Row, Col, Button, FormControl, PageHeader} from 'react-bootstrap';
+import {Grid, Row, Col, Button, FormControl, PageHeader, Modal} from 'react-bootstrap';
 
 import PlayoffPrediction from './PlayoffPrediction'
 import LoadingButton from './LoadingButton';
@@ -21,7 +21,9 @@ export default class ScoutView extends Component {
       ],
       predictions: {},
       sidebar: false,
-      metadata: {}
+      metadata: {},
+      matchaddmodal: false,
+      scoremodal: false
     }
   }
 
@@ -79,8 +81,17 @@ export default class ScoutView extends Component {
       })
   }
 
-  render() {
+  changeModal(c) {
+    return modal => {
+      return () => {
+        let d = {};
+        d[modal] = c;
+        this.setState(d);
+      }
+    }
+  }
 
+  render() {
     return (
       <div>
         <Grid>
@@ -93,7 +104,9 @@ export default class ScoutView extends Component {
               <MatchList matches={this.state.matches}
                          predictions={this.state.predictions}
                          updateMatch={this.updateMatch.bind(this)}
-                         addMatch={this.addMatch.bind(this)} />
+                         addMatch={this.addMatch.bind(this)}
+                         openModal={this.changeModal(true)}
+                         closeModal={this.changeModal(false)} editable />
 
             </Col>
             <Col sm={4}>

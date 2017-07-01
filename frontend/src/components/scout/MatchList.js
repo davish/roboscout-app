@@ -13,26 +13,29 @@ export default class MatchList extends Component {
       rows.push((<MatchInput key={roundNum}
                              probability={this.props.predictions[roundNum]}
                              match={this.props.matches[i]}
-                             updateMatch={this.props.updateMatch(i)} editable/>))
+                             updateMatch={this.props.updateMatch(i)} editable={this.props.editable}/>))
     }
     return (
-      <Table>
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Red 1</th>
-          <th>Red 2</th>
-          <th>Blue 1</th>
-          <th>Blue 2</th>
-          <th>Red Score</th>
-          <th>Blue Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        {rows}
-        <tr><td><Button onClick={this.props.addMatch}>+</Button></td></tr>
-        </tbody>
-      </Table>
+      <div>
+        <Button style={{float: 'right'}} bsSize="xsmall">Quick Add Matches</Button>
+        <Table condensed>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Red 1</th>
+            <th>Red 2</th>
+            <th>Blue 1</th>
+            <th>Blue 2</th>
+            <th>Red Score</th>
+            <th>Blue Score</th>
+          </tr>
+          </thead>
+          <tbody>
+          {rows}
+          <tr><td><Button onClick={this.props.addMatch}>+</Button></td></tr>
+          </tbody>
+        </Table>
+      </div>
     )
   }
 }
