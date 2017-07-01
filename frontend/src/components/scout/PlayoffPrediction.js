@@ -13,10 +13,10 @@ export default class PlayoffPrediction extends Component {
     super(props);
     this.state = {
       alliances: [
-        ['6929', '8686', '5916'],
-        ['5843', '4174', '8645'],
-        ['4029', '5414', '12529'],
-        ['7129', '7244', '9794']
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
       ],
       prediction: null,
       snapshot: null,

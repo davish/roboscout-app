@@ -107,7 +107,7 @@ export default class Bracket extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{textAlign: 'center'}}>
         <Match redAlliance={this.props.alliances[0]}
                blueAlliance={this.props.alliances[3]}
                winner={this.state.SF1}

@@ -33,6 +33,18 @@ export default class MatchInput extends Component {
       tooltip = (<Tooltip id="tooltip">Red: {Math.round(this.props.probability.red*10)/10}% Blue: {Math.round(this.props.probability.blue*10)/10}%</Tooltip>)
     else
       tooltip = (<Tooltip id="tooltip">No Prediction Available.</Tooltip>);
+
+    let cols = [];
+
+    if (this.props.editable) {
+      cols = ['red1', 'red2', 'blue1', 'blue2', 'redscore', 'bluescore']
+          .map(p => <td><FormControl type="text" className="in" value={this.props.match[p] || ''}
+                                     onChange={this.change(p)}/></td>);
+    } else {
+      cols = ['red1', 'red2', 'blue1', 'blue2', 'redscore', 'bluescore']
+          .map(p => <td>{this.props.match[p] || ''}</td>);
+    }
+
     return (
       <tr style={this.getColor(this.props.probability)}>
         <OverlayTrigger placement="top" overlay={tooltip}>
@@ -40,12 +52,7 @@ export default class MatchInput extends Component {
             <a style={{'textDecoration': 'none', 'color': 'inherit', cursor: 'text'}} href={'#'+this.props.match.roundNum} name={this.props.match.roundNum}>{this.props.match.roundNum}</a>
           </td>
         </OverlayTrigger>
-        <td><FormControl type="text" className="in" value={this.props.match.red1 || ''} onChange={this.change('red1')}  /></td>
-        <td><FormControl type="text" className="in" value={this.props.match.red2 || ''} onChange={this.change('red2')} /></td>
-        <td><FormControl type="text" className="in" value={this.props.match.blue1 || ''} onChange={this.change('blue1')} /></td>
-        <td><FormControl type="text" className="in" value={this.props.match.blue2 || ''} onChange={this.change('blue2')} /></td>
-        <td><FormControl type="text" className="in" value={this.props.match.redscore || ''} onChange={this.change('redscore')} /></td>
-        <td><FormControl type="text" className="in" value={this.props.match.bluescore || ''} onChange={this.change('bluescore')} /></td>
+        {cols}
       </tr>
     )
   }
