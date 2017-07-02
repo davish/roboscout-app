@@ -38,11 +38,11 @@ export default class MatchInput extends Component {
 
     if (this.props.editable) {
       cols = ['red1', 'red2', 'blue1', 'blue2', 'redscore', 'bluescore']
-          .map(p => <td><FormControl type="text" className="in" value={this.props.match[p] || ''}
+          .map((p, i) => <td key={i}><FormControl type="text" className="in" value={this.props.match[p] || ''}
                                      onChange={this.change(p)}/></td>);
     } else {
       cols = ['red1', 'red2', 'blue1', 'blue2', 'redscore', 'bluescore']
-          .map(p => <td>{this.props.match[p] || ''}</td>);
+          .map((p, i) => <td key={i}>{this.props.match[p] || ''}</td>);
     }
 
     return (

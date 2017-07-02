@@ -11,6 +11,8 @@ import RankPanel from './RankPanel';
 import Sidebar from './Sidebar';
 import Title from './Title'
 
+import MatchAddModal from './MatchAddModal'
+
 window.matchupdatetimeout = null;
 
 export default class ScoutView extends Component {
@@ -23,11 +25,18 @@ export default class ScoutView extends Component {
       sidebar: false,
       metadata: {},
       matchaddmodal: false,
-      scoremodal: false
+      scoremodal: false,
+      width: window.innerWidth,
+      height: window.innerHeight
     }
   }
 
+  resize() {
+    this.setState({width: window.innerWidth, height: window.innerHeight});
+  }
+
   componentDidMount() {
+    // window.addEventListener('resize', this.resize.bind(this));
     this.setState({metadata: {name: this.props.location.state.name || '', event_date: this.props.location.state.event_date || ''}})
     fetch('/api/tournament/'+this.props.match.params.tournament)
       .then(r => {
@@ -100,18 +109,18 @@ export default class ScoutView extends Component {
                  onChange={(e) => {let m = Object.assign({}, this.state.metadata); m.name = e.target.value; this.setState({metadata: m})}}
           />
           <Row>
-            <Col sm={8}>
+            <Col sm={4} smPush={8}>
+              <RankPanel matches={this.state.matches}
+                         toggleSidebar={() => {this.setState({sidebar: !this.state.sidebar})}} />
+            </Col>
+            <Col sm={8} smPull={4}>
               <MatchList matches={this.state.matches}
                          predictions={this.state.predictions}
                          updateMatch={this.updateMatch.bind(this)}
                          addMatch={this.addMatch.bind(this)}
                          openModal={this.changeModal(true)}
-                         closeModal={this.changeModal(false)} editable />
+                         closeModal={this.changeModal(false)} editable={this.state.width > 640} />
 
-            </Col>
-            <Col sm={4}>
-              <RankPanel matches={this.state.matches}
-                         toggleSidebar={() => {this.setState({sidebar: !this.state.sidebar})}} />
             </Col>
 
           </Row>
@@ -123,6 +132,12 @@ export default class ScoutView extends Component {
           </form>
           <PlayoffPrediction tournament={this.props.match.params.tournament} />
         </Sidebar>
+        <MatchAddModal show={this.state.matchaddmodal}
+                       matches={this.state.matches}
+                       changeModal={this.changeModal.bind(this)}
+                       updateMatch={this.updateMatch.bind(this)}
+                       addMatch={this.addMatch.bind(this)}
+        />
       </div>
     )
   }

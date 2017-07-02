@@ -17,7 +17,7 @@ export default class MatchList extends Component {
     }
     return (
       <div>
-        <Button style={{float: 'right'}} bsSize="xsmall">Quick Add Matches</Button>
+        <Button style={{float: 'right'}} bsSize="xsmall" onClick={this.props.openModal('matchaddmodal')}>Quick Add Matches</Button>
         <Table condensed>
           <thead>
           <tr>
