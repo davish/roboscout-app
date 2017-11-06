@@ -120,7 +120,7 @@ def create_tournament():
         t.name = body.get('name')
     db.session.add(t)
     db.session.commit()
-    return jsonify({'id': t.id})
+    return jsonify(t.get_info())
 
 
 @app.route('/api/tournament/<t>')
