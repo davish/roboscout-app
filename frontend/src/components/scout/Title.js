@@ -15,7 +15,7 @@ export default class Title extends Component {
 
     let name = this.props.name || 'Double-Click To Set Name';
 
-    let h = <span onDoubleClick={() => {this.setState({input: true})}}>{name}</span>;
+    let h = <span style={{cursor:'pointer'}} onClick={() => {this.setState({input: true})}}>{name}</span>;
 
     if (this.state.input)
       h = <input value={this.props.name}
