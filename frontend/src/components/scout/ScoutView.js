@@ -25,6 +25,7 @@ export default class ScoutView extends Component {
       sidebar: false,
       metadata: {},
       matchaddmodal: false,
+      matchIndex: 0,
       scoremodal: false,
       width: window.innerWidth,
       height: window.innerHeight
@@ -100,6 +101,12 @@ export default class ScoutView extends Component {
     }
   }
 
+  setMatchIndex(roundNum) {
+    return () => {
+      this.setState({matchIndex: roundNum})
+    }
+  }
+
   render() {
     return (
       <div>
@@ -119,7 +126,10 @@ export default class ScoutView extends Component {
                          updateMatch={this.updateMatch.bind(this)}
                          addMatch={this.addMatch.bind(this)}
                          openModal={this.changeModal(true)}
-                         closeModal={this.changeModal(false)} editable={this.state.width > 640} />
+                         closeModal={this.changeModal(false)}
+                         editable={this.state.width > 640}
+                         setMatchIndex={this.setMatchIndex.bind(this)}
+              />
 
             </Col>
 
@@ -137,6 +147,8 @@ export default class ScoutView extends Component {
                        changeModal={this.changeModal.bind(this)}
                        updateMatch={this.updateMatch.bind(this)}
                        addMatch={this.addMatch.bind(this)}
+                       matchIndex={this.state.matchIndex}
+                       setMatchIndex={this.setMatchIndex.bind(this)}
         />
       </div>
     )

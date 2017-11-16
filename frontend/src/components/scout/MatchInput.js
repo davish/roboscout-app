@@ -32,7 +32,7 @@ export default class MatchInput extends Component {
     if (this.props.probability)
       tooltip = (<Tooltip id="tooltip">Red: {Math.round(this.props.probability.red*10)/10}% Blue: {Math.round(this.props.probability.blue*10)/10}%</Tooltip>)
     else
-      tooltip = (<Tooltip id="tooltip">No Prediction Available.</Tooltip>);
+      tooltip = (<Tooltip id="tooltip">Tap to modify match</Tooltip>);
 
     let cols = [];
 
@@ -49,7 +49,12 @@ export default class MatchInput extends Component {
       <tr style={this.getColor(this.props.probability)}>
         <OverlayTrigger placement="top" overlay={tooltip}>
           <td>
-            <a style={{'textDecoration': 'none', 'color': 'inherit', cursor: 'text'}} href={'#'+this.props.match.roundNum} name={this.props.match.roundNum}>{this.props.match.roundNum}</a>
+            <a style={{'textDecoration': 'none', 'color': 'inherit', cursor: 'text'}}
+               href={'#'+this.props.match.roundNum}
+               name={this.props.match.roundNum}
+               onClick={() => {this.props.setMatchIndex(this.props.match.roundNum-1)(); this.props.openModal('matchaddmodal')()}}>
+                {this.props.match.roundNum}
+               </a>
           </td>
         </OverlayTrigger>
         {cols}

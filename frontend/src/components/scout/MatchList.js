@@ -13,7 +13,10 @@ export default class MatchList extends Component {
       rows.push((<MatchInput key={roundNum}
                              probability={this.props.predictions[roundNum]}
                              match={this.props.matches[i]}
-                             updateMatch={this.props.updateMatch(i)} editable={this.props.editable}/>))
+                             updateMatch={this.props.updateMatch(i)} editable={this.props.editable}
+                             setMatchIndex={this.props.setMatchIndex}
+                             openModal={this.props.openModal}
+      />))
     }
     return (
       <div>

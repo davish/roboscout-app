@@ -10,7 +10,6 @@ export default class MatchAddModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      matchIndex: 0,
       fieldIndex: 0
     }
   }
@@ -19,7 +18,7 @@ export default class MatchAddModal extends Component {
     return e => {
       let d = {};
       d[param] = e.target.value;
-      this.props.updateMatch(this.state.matchIndex)(param, e.target.value);
+      this.props.updateMatch(this.props.matchIndex)(param, e.target.value);
     }
   }
 
@@ -32,14 +31,14 @@ export default class MatchAddModal extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.matchIndex >= this.props.matches.length) {
+    if (this.props.matchIndex >= this.props.matches.length) {
       this.props.addMatch()
     }
   }
 
   render() {
-    let match = this.props.matches[this.state.matchIndex] || {};
-    const vals = ['red1', 'red2', 'blue1', 'blue2']
+    let match = this.props.matches[this.props.matchIndex] || {};
+    const vals = ['red1', 'red2', 'blue1', 'blue2', 'redscore', 'bluescore']
         .map(p => {return match[p] || ''});
     return (
       <Modal show={this.props.show} onHide={this.props.changeModal(false)('matchaddmodal')}>
@@ -47,9 +46,10 @@ export default class MatchAddModal extends Component {
           <Modal.Title>Quick Match Modification</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p style={{textAlign: 'center'}}>
-            <h2>Round {match.roundNum || this.state.matchIndex+1}</h2>
-          </p>
+             <h2>Round {match.roundNum || this.props.matchIndex+1}</h2>
+          {/*<p style={{textAlign: 'center'}}>*/}
+           {/**/}
+          {/*</p>*/}
           <p style={{textAlign: 'center'}}>
           Red 1: {' '}
           <input id="i0"
@@ -79,8 +79,22 @@ export default class MatchAddModal extends Component {
                  onChange={this.change('blue2')}
                  onKeyPress={this.keypress.bind(this)} style={{width: 60}}/>
           </p>
-          <Button onClick={() => this.setState({matchIndex: Math.max(this.state.matchIndex-1, 0)})}>Back</Button>
-          <Button onClick={() => this.setState({matchIndex: this.state.matchIndex+1})} style={{float: 'right'}}>Next</Button>
+          <p style={{textAlign: 'center'}}>
+          Red Score: {' '}
+          <input id="i4"
+                 type="tel"
+                 value={vals[4]}
+                 onChange={this.change('redscore')}
+                 onKeyPress={this.keypress.bind(this)} style={{width: 60}}/> {' '}
+          Blue Score: {' '}
+          <input id="i5"
+                 type="tel"
+                 value={vals[5]}
+                 onChange={this.change('bluescore')}
+                 onKeyPress={this.keypress.bind(this)} style={{width: 60}}/>
+          </p>
+          <Button onClick={() => this.props.setMatchIndex(Math.max(this.props.matchIndex-1, 0))()}>Back</Button>
+          <Button onClick={() => this.props.setMatchIndex(this.props.matchIndex+1)()} style={{float: 'right'}}>Next</Button>
         </Modal.Body>
       </Modal>
     )
