@@ -47,7 +47,7 @@ export default class RankPanel extends Component {
     let highlightTopTenth = false;
 
     if (this.state.showscout) {
-      headers = ['Team', 'ExpO', 'Variance'];
+      headers = ['Team', 'ExpO', 'Variance', 'OPAR'];
 
       let teams = Object.keys(this.state.scout);
       for (let i = 0; i < teams.length; i++) {
@@ -58,7 +58,7 @@ export default class RankPanel extends Component {
 
       rank = rank.sort((a, b) => {
         return b.expo - a.expo;
-      }).map(r => {return [r.team, Math.round(r.expo), Math.round(r.variance)]});
+      }).map(r => {return [r.team, Math.round(r.expo), Math.round(r.variance), r.opar.toFixed(1)]});
     }
     else {
       headers = ['Rank', 'Team', 'QP', 'RP', 'ExpO'];

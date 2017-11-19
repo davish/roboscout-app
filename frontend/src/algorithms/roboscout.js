@@ -108,9 +108,12 @@ export default function scout(data) {
   let mod = mapzip(teams, t => {return ta[t] - tpa[t]});
 
   let expo = mapzip(teams, t => {return Math.round(ta[t]/2+mod[t])});
-  // let avgexpo = avg(Object.keys(expo).map(k => {return expo[k]}));
+  let avgexpo = avg(Object.keys(expo).map(k => {return expo[k]}));
+
+  // opar = mapd(lambda x: 0, expo) if avgexpo==0 else mapd(lambda o: round(o/avgexpo,1), expo)
+  let opar = mapd(expo, o => (o*1.0/avgexpo));
 
   let stdev = mapzip(teams, t => {return std(tm[t].map(score => {return score/2+mod[t]}))});
 
-  return mapzip(teams, t => {return {expo: expo[t], variance: stdev[t]}});
+  return mapzip(teams, t => {return {expo: expo[t], variance: stdev[t], opar: opar[t]}});
 }
